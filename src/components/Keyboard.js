@@ -80,7 +80,7 @@ function Keyboard(props) {
             className="one-and-a-half"
             onClick={() => props.onClick("ENTER")}
           >
-            ENTER
+            ENT
           </button>
           {row_3_buttons}
           <button data-state="tbd" onClick={() => props.onClick("DEL")}>
