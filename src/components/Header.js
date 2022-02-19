@@ -13,7 +13,7 @@ function Header(props) {
         </game-icon>
       </button>
       </div>
-      <div className="title"> WORDLE-HEB </div>
+      <div className="title"> WORD-HEB </div>
       <div className="menu">
       <button id="statistics-button" className="icon" aria-label="statistics" onClick={props.handleStats}>
         <game-icon icon="statistics">

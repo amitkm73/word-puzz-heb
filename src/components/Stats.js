@@ -27,20 +27,24 @@ function Stats(props) {
             <table>
               <tbody>
                 <tr>
-                  <td colSpan="4">
+                  <td colSpan="2">
                     <b> סטטיסטיקה </b>
                   </td>
                 </tr>
                 <tr>
                   <td>{props.userNumPlayed}</td>
-                  <td>{winRate}</td>
-                  <td>{props.userCurrentStreak}</td>
-                  <td>{props.userMaxStreak}</td>
+                  <td>משחקים</td>
                 </tr>
                 <tr>
-                  <td>משחקים</td>
+                  <td>{winRate}</td>
                   <td>%נצחונות</td>
+                </tr>
+                <tr>
+                  <td>{props.userCurrentStreak}</td>
                   <td>רצף נוכחי</td>
+                </tr>
+                <tr>
+                  <td>{props.userMaxStreak}</td>
                   <td>רצף מקסימלי</td>
                 </tr>
               </tbody>
@@ -48,27 +52,37 @@ function Stats(props) {
             <table>
               <tbody>
                 <tr>
-                  <td colSpan="8">
+                  <td colSpan="2">
                     <b>התפלגות תוצאות</b>
                   </td>
                 </tr>
                 <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td colSpan="2">ניחושים</td>
+                  <td>נצחונות</td>
+                  <td>ניחושים</td>
                 </tr>
                 <tr>
                   <td>{props.userWins[0]}</td>
+                  <td><b>1</b></td>
+                </tr>
+                <tr>
                   <td>{props.userWins[1]}</td>
+                  <td><b>2</b></td>
+                </tr>
+                <tr>
                   <td>{props.userWins[2]}</td>
+                  <td><b>3</b></td>
+                </tr>
+                <tr>
                   <td>{props.userWins[3]}</td>
+                  <td><b>4</b></td>
+                </tr>
+                <tr>
                   <td>{props.userWins[4]}</td>
+                  <td><b>5</b></td>
+                </tr>
+                <tr>
                   <td>{props.userWins[5]}</td>
-                  <td colSpan="2">נצחונות</td>
+                  <td><b>6</b></td>
                 </tr>
               </tbody>
             </table>
