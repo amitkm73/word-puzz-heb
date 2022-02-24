@@ -409,7 +409,7 @@ function App() {
     if (gameState !== 'win') {
       return;
     }
-    var shareText = "Puzzle " + puzzleNum + " " + guessCount + "/6 \n";
+    var shareText = "חידון " + puzzleNum + " " + guessCount + "/6 \n";
     for (var row=0; row<guessCount; row++) {
       for (var col=0; col<5; col++) {
         switch(tileData[row*5+col].dataState) {
