@@ -22,8 +22,8 @@ function Keyboard(props) {
           dataState = "present";
         } else if (
           props.tileData[i].dataState === "absent" &&
-          dataState !== "present"
-        ) {
+          dataState !== "present")
+        {
           dataState = "absent";
         }
       }

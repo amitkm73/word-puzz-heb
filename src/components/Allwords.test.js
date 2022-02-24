@@ -1,4 +1,3 @@
-
 import ALL_WORDS from './Allwords';
 
 it('checks ALL_WORDS array is large', () => {
