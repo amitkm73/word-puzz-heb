@@ -406,9 +406,6 @@ function App() {
   function handleShare() {
     var shareChar='*';
     setSolvedMsg(false);
-    if (gameState !== 'win') {
-      return;
-    }
     var shareText = "חידון " + puzzleNum + " " + guessCount + "/6 \n";
     for (var row=0; row<guessCount; row++) {
       for (var col=0; col<5; col++) {
