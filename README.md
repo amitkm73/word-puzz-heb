@@ -1,7 +1,7 @@
 # word puzzle hebrew
 A Hebrew version for WORDLE, created as web development exercise. \
 All rights and credits go to the original WORDLE game creators and lawful owners. \
-I used this exercise in order to learn HTML, CSS, JS and React and some work with common tooling. \
+I used this exercise in order to learn HTML, CSS, JS and React and some work with common tooling.
 
 
 ## Getting Started with Create React App
