@@ -72,7 +72,12 @@ function Keyboard(props) {
   return (
     <game-keyboard>
       <div id="keyboard">
-        <div className="keyboard-row">{row_1_buttons}</div>
+        <div className="keyboard-row">
+          {row_1_buttons}
+          <button data-state="tbd" onClick={() => props.onClick("DEL")}>
+            DEL
+          </button>
+          </div>
         <div className="keyboard-row">{row_2_buttons}</div>
         <div className="keyboard-row">
           <button
@@ -83,9 +88,6 @@ function Keyboard(props) {
             ENT
           </button>
           {row_3_buttons}
-          <button data-state="tbd" onClick={() => props.onClick("DEL")}>
-            DEL
-          </button>
         </div>
       </div>
     </game-keyboard>
