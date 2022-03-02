@@ -2,9 +2,10 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { nanoid } from "nanoid";
 
-const row_1_letters = ["פ", "ם", "ן", "ו", "ט", "א", "ר", "ק"];
-const row_2_letters = ["ף", "ך", "ל", "ח", "י", "ע", "כ", "ג", "ד", "ש"];
-const row_3_letters = ["ץ", "ת", "צ", "מ", "נ", "ה", "ב", "ס", "ז"];
+const key_letters = [["פ", "ם", "ן", "ו", "ט", "א", "ר", "ק"],
+                    ["ף", "ך", "ל", "ח", "י", "ע", "כ", "ג", "ד", "ש"],
+                    ["ץ", "ת", "צ", "מ", "נ", "ה", "ב", "ס", "ז"]];
+
 
 function Keyboard(props) {
   function handleClick(e) {
@@ -31,43 +32,26 @@ function Keyboard(props) {
     return dataState;
   }
 
-  var row_1_buttons = [];
-  var i = 0;
-  for (i = 7; i >= 0; i--) {
-    row_1_buttons.push(
-      <button
-        data-state={getDataState(row_1_letters[i])}
-        onClick={handleClick}
-        key={nanoid()}
-      >
-        {row_1_letters[i]}
-      </button>
-    );
+  function getRowButtons(row_num, row_len) {
+    var row_buttons = [];
+    var i = 0;
+    for (i = row_len-1; i >= 0; i--) {
+      row_buttons.push(
+          <button
+            data-state={getDataState(key_letters[row_num][i])}
+            onClick={handleClick}
+            key={nanoid()}
+          >
+            {(key_letters[row_num][i])}
+          </button>
+      );
+    }
+    return row_buttons;
   }
-  var row_2_buttons = [];
-  for (i = 9; i >= 0; i--) {
-    row_2_buttons.push(
-      <button
-        data-state={getDataState(row_2_letters[i])}
-        onClick={handleClick}
-        key={nanoid()}
-      >
-        {row_2_letters[i]}
-      </button>
-    );
-  }
-  var row_3_buttons = [];
-  for (i = 8; i >= 0; i--) {
-    row_3_buttons.push(
-      <button
-        data-state={getDataState(row_3_letters[i])}
-        onClick={handleClick}
-        key={nanoid()}
-      >
-        {row_3_letters[i]}
-      </button>
-    );
-  }
+
+  var row_1_buttons = getRowButtons(0, 8);
+  var row_2_buttons = getRowButtons(1, 10);
+  var row_3_buttons = getRowButtons(2, 9);
 
   return (
     <game-keyboard>
@@ -77,8 +61,10 @@ function Keyboard(props) {
           <button data-state="tbd" onClick={() => props.onClick("DEL")}>
             DEL
           </button>
-          </div>
-        <div className="keyboard-row">{row_2_buttons}</div>
+        </div>
+        <div className="keyboard-row">
+          {row_2_buttons}
+        </div>
         <div className="keyboard-row">
           <button
             data-state="tbd"
