@@ -12,6 +12,10 @@ import HEB_LETTERS from './components/HebLetters';
 import getSolution from './components/Solutions';
 import copyToClipboard from './components/Clipboard';
 
+const WIN_MESSAGES = ["גאוני", "מצויין", "טוב מאוד", "טוב", "נכון", "נכון"];
+
+// globals that store game state
+// 5 letters * 6 rows => 30 tiles
 var tileData = [
   {letter: "*", dataState:"empty"},
   {letter: "*", dataState:"empty"},
@@ -44,22 +48,26 @@ var tileData = [
   {letter: "*", dataState:"empty"},
   {letter: "*", dataState:"empty"}
 ];
-
-const WIN_MESSAGES = ["גאוני", "מצויין", "טוב מאוד", "טוב", "נכון", "נכון"];
-
+// in addition to tiles the game state inlcudesthe following:
 var userCursorY = 0;
 var userGuessCount = 0;
 var userGameState = "playing";
-var userPuzzleNum = 0;
-var userWins = [0, 0, 0, 0, 0, 0];
-var userCurrentStreak = 0;
-var userMaxStreak = 0;
-var userNumPlayed = 0;
 const [puzzleNum, puzzleSolution] = getSolution();
 var animationState = "idle-cells";
 var animationRow = 0;
 var msgText = "תוצאות";
 
+// user game history:
+var userPuzzleNum = 0;
+var userWins = [0, 0, 0, 0, 0, 0];
+var userCurrentStreak = 0;
+var userMaxStreak = 0;
+var userNumPlayed = 0;
+
+/**
+ * loads tile history from local storage.
+ * helper function to loadUserState().
+ */
 function loadUserTiles() {
   var i, letter, dataState;
   for (i=0; i<30; i++) {
@@ -73,14 +81,22 @@ function loadUserTiles() {
     }
   }
 }
-
+/**
+ * saves tile to local storage.
+ * helper function to saveUserState().
+ */
 function saveUserTiles() {
   for (var i=0; i<30; i++) {
     localStorage.setItem('t_l'+i, tileData[i].letter);
     localStorage.setItem('t_s'+i, tileData[i].dataState);
   }
 }
-
+/**
+ * calculates and save user stats to local storage.
+ * helper function to saveUserState().
+ * @param {number} guessCount how many guesses were done in the game.
+ * @param {string} gameState 'win' or 'lost'.
+ */
 function saveUserStats(guessCount, gameState) {
   if (gameState === 'win') {
     userWins[guessCount-1] +=1;
@@ -101,7 +117,10 @@ function saveUserStats(guessCount, gameState) {
     localStorage.setItem('numPlayed', userNumPlayed);
   }
 }
-
+/**
+ * loads statistics from local storage.
+ * helper function to loadUserState().
+ */
 function loadUserStats() {
   var i, tmp;
   for (i=1; i<=6; i++) {
@@ -123,7 +142,11 @@ function loadUserStats() {
     userNumPlayed = parseInt(tmp);
   }
 }
-
+/**
+ * loads user state and history from local storage.
+ * local storage works per browser x per device.
+ * chosen by the original game in order to keep everything client-side.
+ */
 function loadUserState() {
     var tmp;
     tmp = localStorage.getItem('puzzleNum');
@@ -153,7 +176,11 @@ function loadUserState() {
     loadUserTiles();
     loadUserStats();
 }
-
+/**
+ * saves user state and history to local storage.
+ * local storage works per browser x per device.
+ * chosen by the original game in order to keep everything client-side.
+ */
 function saveUserState(puzzleNum, cursorY, guessCount, gameState) {
     localStorage.setItem('puzzleNum', puzzleNum);
     localStorage.setItem('cursorY', cursorY);
@@ -162,9 +189,11 @@ function saveUserState(puzzleNum, cursorY, guessCount, gameState) {
     saveUserTiles();
     saveUserStats(guessCount, gameState);
 }
-
-function clearUserState()
-{
+/**
+ * clears per game user state from local storage.
+ * this happens if the saved state belongs to a puzzle from a past day.
+ */
+function clearUserState() {
   var i;
   userCursorY = 0;
   userGuessCount = 0;
@@ -182,6 +211,11 @@ function clearUserState()
   }
 }
 
+/**
+ * activates animation on all tiles in the current row.
+ * helper function to animationControl() state machine.
+ * @param {string} animationState 'idle', 'flip-in', 'flip-out'.
+ */
 function setDataAnimation(animationState) {
   const row_list = document.getElementsByClassName('row');
   const cell_list = row_list[animationRow].getElementsByClassName('tile');
@@ -189,7 +223,13 @@ function setDataAnimation(animationState) {
     cell_list[i].setAttribute("data-animation", animationState);
   }
 }
-
+/**
+ * state machine that controls animation on the game tiles.
+ * the game is using css animation.
+ * the state machine sets the 'data-animation' attribute of the html elements
+ * global vars that control the state machine: animationState, animationRow.
+ * @param {func} userMsgFunc function to show text message to the user.
+ */
 function animationControl(userMsgFunc) {
   var row_list;
   var game_element;
@@ -253,8 +293,19 @@ function animationControl(userMsgFunc) {
   }
 }
 
+// calling this to initialize globals that hold the game state
 loadUserState();
 
+/**
+ * react app component function.
+ * function structure:
+ *   state variables - framrwork will re-render when these change
+ *   helper functions - (1) user messages (2) game logic (3) event handlers
+ *     typical flow is event -> game logic -> state change -> render
+ *   html elements rendering code
+ *   (post render actions - focus, animation)
+ * @return {element} game application component.
+ */
 function App() {
 
   const [tiles, setTiles] = useState(tileData);
@@ -267,7 +318,11 @@ function App() {
   const gameRef = useRef(null);
   const [msgOpen, setMsgOpen] = useState(false);
   const [solvedMsg, setSolvedMsg] = useState(false);
-
+  /**
+   * shows a text message.
+   * this is done by setting one of the state variables.
+   * @param {string} text the messgage to show.
+   */
   function showUserMsg(text) {
       if (text === "win") {
         msgText = WIN_MESSAGES[guessCount-1];
@@ -277,12 +332,18 @@ function App() {
         setMsgOpen(true);
       }
   }
-
+  /**
+   * hides the user message.
+   */
   function hideUserMsg() {
     msgText = "תוצאות";
     setMsgOpen(false);
   }
-
+  /**
+   * check the tiles in the current row after the user submitted a guess.
+   * sets the .dataState of each tile to "absent", "present" or "correct".
+   * helper function to checkGuess().
+   */
   function checkTiles() {
     for (var i=4; i>=0; i--) {
       if(!puzzleSolution.includes(tiles[cursorY*5+i].letter)) {
@@ -304,7 +365,9 @@ function App() {
     }
     setTiles(tiles);
   }
-
+  /**
+   * checks user guess after the user submitted a word.
+   */
   function checkGuess() {
     var guess = "";
     var tmpState = "playing";
@@ -332,7 +395,9 @@ function App() {
     setCursorY(cursorY+1);
     setCursorX(4);
   }
-
+  /**
+   * handles input of hebrew letter either from keyboard or virtual keyboard.
+   */
   function handleHebLetter(letter) {
     if (gameState !== "playing") {
       return;
@@ -345,7 +410,9 @@ function App() {
     setTiles(tiles);
     setCursorX(cursorX-1);
   }
-
+  /**
+   * handles user pressing 'Enter' either from keyboard or virtual keyboard.
+   */
   function handleEnter() {
     if (gameState !== "playing") {
       return;
@@ -355,7 +422,9 @@ function App() {
     }
     checkGuess();
   }
-
+  /**
+   * handles user pressing 'Delete' either from keyboard or virtual keyboard.
+   */
   function handleDelete() {
     if (gameState !== "playing") {
       return;
@@ -368,7 +437,9 @@ function App() {
     setTiles(tiles);
     setCursorX(cursorX+1);
   }
-
+  /**
+   * handles key press events.
+   */
   function handleKeyPress(e) {
     const k = e.key;
     if (HEB_LETTERS.includes(k)) {
@@ -377,7 +448,9 @@ function App() {
       handleEnter();
     }
   }
-
+  /**
+   * handles key down events, this is needed for the 'Backspace' key.
+   */
   function handleKeyDown(e) {
     hideUserMsg();
     if (gameState !== "playing") {
@@ -388,7 +461,9 @@ function App() {
       handleDelete();
     }
   }
-
+  /**
+   * handles virtual keyboard events.
+   */
   function handleVirtualKey(id) {
     switch(id) {
       case "DEL":
@@ -402,7 +477,9 @@ function App() {
         break;
     }
   }
-
+  /**
+   * handles 'Share' button event which is show in the Statistics screen.
+   */
   function handleShare() {
     var shareChar='*';
     setSolvedMsg(false);
@@ -430,7 +507,7 @@ function App() {
     msgText="התוצאות הועתקו אל הלוח";
     setMsgOpen(true);
   }
-
+  // build 5 tile rows to be rendered:
   var rowList = [];
   for (var row=0; row<=5; row++) {
     var rowWord = "";
@@ -441,7 +518,7 @@ function App() {
     }
     rowList.push(<Row rowword={rowWord} rowdatastates={rowDataStates} key={nanoid()}/>);
   }
-
+  // after rendering we need to do the following:
   useEffect(() => {
     gameRef.current.focus();
     animationControl(showUserMsg);

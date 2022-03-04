@@ -6,7 +6,6 @@ const key_letters = [["פ", "ם", "ן", "ו", "ט", "א", "ר", "ק"],
                     ["ף", "ך", "ל", "ח", "י", "ע", "כ", "ג", "ד", "ש"],
                     ["ץ", "ת", "צ", "מ", "נ", "ה", "ב", "ס", "ז"]];
 
-
 function Keyboard(props) {
   function handleClick(e) {
     props.onClick(e.target.textContent);
