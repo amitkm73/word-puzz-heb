@@ -148,6 +148,7 @@ function loadUserStats() {
  * chosen by the original game in order to keep everything client-side.
  */
 function loadUserState() {
+    loadUserStats();
     var tmp;
     tmp = localStorage.getItem('puzzleNum');
     if (tmp !== null) {
@@ -174,7 +175,6 @@ function loadUserState() {
       animationState = userGameState;
     }
     loadUserTiles();
-    loadUserStats();
 }
 /**
  * saves user state and history to local storage.
