@@ -596,7 +596,7 @@ a:visited {
 }
 /* close icon for user messages: */
 .close-icon {
-  content: "x";
+  /* content: "x"; */
   color: var(--color-tone-1);
   cursor: pointer;
   position: fixed;
@@ -608,7 +608,7 @@ a:visited {
   border-radius: 50%;
   line-height: 20px;
   text-align: center;
-  border: 1px solid #999;
+  /* border: 1px solid #999;*/
   font-size: 20px;
 }
 /* close icon for usage and settings screens */
