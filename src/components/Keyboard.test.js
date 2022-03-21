@@ -40,8 +40,3 @@ it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(<Keyboard tileData={testTiles} />, div);
 });
-
-it('renders key called DEL', () => {
-    render(<Keyboard tileData={testTiles} />);
-    expect(screen.getByText('DEL')).toBeInTheDocument();
-});
