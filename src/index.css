@@ -580,7 +580,7 @@ a:visited {
 
 .box {
   position: relative;
-  width: 320px;
+  width: 300px;
   margin: 0 auto;
   height: auto;
   max-height: 70vh;
@@ -600,7 +600,7 @@ a:visited {
   color: var(--color-tone-1);
   cursor: pointer;
   position: fixed;
-  left: calc(50vw + 160px);
+  left: calc(50vw + 150px);
   top: calc(100vh - 85vh - 25px);
   background: var(--color-tone-5);
   width: 25px;
